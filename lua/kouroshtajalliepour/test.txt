@@ -1,7 +1,0 @@
-this is my something elseToNew.txt
-we are going to replace text
-
-this is something elseToNewForCase
-this is a something elseToNew
-also this is a something elseToNewFORCASE
-and this is a another something elseToNew
