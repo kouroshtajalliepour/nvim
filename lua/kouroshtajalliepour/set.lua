@@ -7,6 +7,11 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.showmode = false
 
+vim.opt.expandtab = true   -- use spaces instead of real tab chars
+vim.opt.shiftwidth = 2     -- indentation width
+vim.opt.tabstop = 2        -- tab character width (visual)
+vim.opt.softtabstop = 2    -- editing uses 2 spaces per tab
+
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
 

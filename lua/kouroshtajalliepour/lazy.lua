@@ -10,6 +10,10 @@ local vimFugitive = require("kouroshtajalliepour.plugin.vim-fugitive")
 local harpoon = require("kouroshtajalliepour.plugin.harpoon")
 local oil = require("kouroshtajalliepour.plugin.oil")
 local luaLine = require("kouroshtajalliepour.plugin.lualine")
+local undotree = require("kouroshtajalliepour.plugin.undotree")
+local foldable = require("kouroshtajalliepour.plugin.foldable")
+local cmp = require("kouroshtajalliepour.plugin.cmp")
+local incRename = require("kouroshtajalliepour.plugin.inc-rename")
 
 return {
 	-- Themes and utils
@@ -25,9 +29,13 @@ return {
 	diffview,
 
 	-- code related
+  foldable,
 	lsp,
 	mini,
+	undotree,
 	todoComments,
+  cmp,
+  incRename,
 
 
 	-- file management
