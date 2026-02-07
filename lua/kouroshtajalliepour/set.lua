@@ -1,5 +1,5 @@
 --
--- [ configs ]
+-- [ config ]
 --
 
 -- line
@@ -12,7 +12,7 @@ vim.opt.shiftwidth = 2     -- indentation width
 vim.opt.tabstop = 2        -- tab character width (visual)
 vim.opt.softtabstop = 2    -- editing uses 2 spaces per tab
 
--- Enable mouse mode, can be useful for resizing splits for example!
+-- Enable mouse mode, can be useful for resized splits for example!
 vim.o.mouse = 'a'
 
 -- Clipboard sync
@@ -24,7 +24,7 @@ end)
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
--- Keep signcolumn on by default
+-- Keep sign column on by default
 vim.o.signcolumn = 'yes'
 
 -- Decrease update time
@@ -54,4 +54,5 @@ vim.o.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
-
+vim.opt.spelllang = "en_us"
+vim.opt.spell = true
