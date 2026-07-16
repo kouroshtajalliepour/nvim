@@ -16,9 +16,13 @@ local incRename = require("kouroshtajalliepour.plugin.inc-rename")
 local multi = require("kouroshtajalliepour.plugin.vim-visual-multi")
 local conform = require("kouroshtajalliepour.plugin.conform")
 local autotag = require("kouroshtajalliepour.plugin.autotag")
+local comment = require("kouroshtajalliepour.plugin.comment")
 local trouble = require("kouroshtajalliepour.plugin.trouble")
 local fidget = require("kouroshtajalliepour.plugin.fidget")
 local autopairs = require("kouroshtajalliepour.plugin.autopairs")
+local surround = require("kouroshtajalliepour.plugin.sorround")
+local markdown = require("kouroshtajalliepour.plugin.markdown")
+
 return {
   -- Themes and utils
   themes,
@@ -33,7 +37,7 @@ return {
   diffview,
 
   -- code related
-  "numToStr/Comment.nvim",
+  comment,
   foldable,
   lsp,
   trouble,
@@ -47,6 +51,8 @@ return {
   conform,
   autotag,
   autopairs,
+  surround,
+  markdown,
 
   -- file management
   harpoon,
