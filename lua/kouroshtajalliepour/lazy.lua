@@ -22,11 +22,12 @@ local fidget = require("kouroshtajalliepour.plugin.fidget")
 local autopairs = require("kouroshtajalliepour.plugin.autopairs")
 local surround = require("kouroshtajalliepour.plugin.sorround")
 local markdown = require("kouroshtajalliepour.plugin.markdown")
+local treesitter = require("kouroshtajalliepour.plugin.treesitter")
 
 return {
   -- Themes and utils
   themes,
-  { "nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate" },
+  treesitter,
   'NMAC427/guess-indent.nvim',
   search,
   whichKey,

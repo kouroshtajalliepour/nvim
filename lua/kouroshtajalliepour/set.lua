@@ -56,3 +56,6 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
+
+-- Persist undo history across sessions (pairs with the undotree plugin)
+vim.o.undofile = true

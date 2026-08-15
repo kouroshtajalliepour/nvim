@@ -5,7 +5,6 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
 vim.keymap.set("n", "J", ":m .+1<CR>", { silent = true })
 vim.keymap.set("n", "K", ":m .-2<CR>", { silent = true })
-vim.keymap.set("v", "<C-j>", ":t'>+1<CR>gv=gv")
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -18,11 +17,11 @@ vim.keymap.set("n", "f", "s")
 -- Duplicate line/selection up/down
 
 -- Duplicate Down
-vim.keymap.set('n', '<C-j>', 'mt:t+<CR>`t', { noremap = true, silent = true, desc = "Duplicate line down" })
+vim.keymap.set('n', '<A-j>', 'mt:t+<CR>`t', { noremap = true, silent = true, desc = "Duplicate line down" })
 vim.keymap.set('v', '<C-j>', ":t'>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Duplicate selection down" })
 
 -- Duplicate Up
-vim.keymap.set('n', '<C-k>', 'mt:t-1<CR>`t', { noremap = true, silent = true, desc = "Duplicate line up" })
+vim.keymap.set('n', '<A-k>', 'mt:t-1<CR>`t', { noremap = true, silent = true, desc = "Duplicate line up" })
 vim.keymap.set('v', '<C-k>', ":t'<-1<CR>gv=gv", { noremap = true, silent = true, desc = "Duplicate selection up" })
 
 -- Diagnostic keymaps
