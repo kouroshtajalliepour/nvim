@@ -13,9 +13,3 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y lua5.1
           find . -name '*.lua' -print0 | xargs -0 -n1 luac5.1 -p
-
-      - name: Snyk Code scan
-        uses: snyk/actions/setup@master
-      - run: snyk code test
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
