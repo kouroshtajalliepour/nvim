@@ -24,8 +24,11 @@ vim.keymap.set('v', '<C-j>', ":t'>+1<CR>gv=gv", { noremap = true, silent = true,
 vim.keymap.set('n', '<A-k>', 'mt:t-1<CR>`t', { noremap = true, silent = true, desc = "Duplicate line up" })
 vim.keymap.set('v', '<C-k>', ":t'<-1<CR>gv=gv", { noremap = true, silent = true, desc = "Duplicate selection up" })
 
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+-- Diagnostics (LSP/Diagnostics group, see which-key.lua)
+vim.keymap.set('n', '<leader>ld', vim.diagnostic.open_float, { desc = 'Line [D]iagnostics' })
+vim.keymap.set('n', '<leader>lq', vim.diagnostic.setloclist, { desc = 'Diagnostics [Q]uickfix List' })
+vim.keymap.set('n', '<leader>ln', function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = '[N]ext Diagnostic' })
+vim.keymap.set('n', '<leader>lp', function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = '[P]revious Diagnostic' })
 
 -- Disabled arrow keys
 vim.keymap.set({ 'i', 'n', 'v' }, '<left>', '<cmd>echo "Use h to move!!"<CR>')

@@ -99,5 +99,50 @@ return { -- Fuzzy Finder (files, lsp, etc)
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      -- Harpoon-style quick picker over changed files; Enter opens the file and shows
+      -- removed lines inline (highlighted via gitsigns' DiffDelete-linked group),
+      -- instead of a diff split.
+      local function show_inline_diff()
+        require('gitsigns').toggle_deleted()
+      end
+
+      vim.keymap.set('n', '<leader>gf', function()
+        local actions = require('telescope.actions')
+        builtin.git_status {
+          attach_mappings = function(_, _)
+            actions.select_default:enhance { post = show_inline_diff }
+            return true
+          end,
+        }
+      end, { desc = 'Git: Changed Files (inline diff)' })
+
+      -- Same picker, but against an arbitrary branch/ref instead of your working tree.
+      vim.keymap.set('n', '<leader>gv', function()
+        local ref = vim.fn.input('Compare against branch/ref: ', 'main')
+        if ref == '' then return end
+
+        local actions = require('telescope.actions')
+        local action_state = require('telescope.actions.state')
+        local finders = require('telescope.finders')
+        local pickers = require('telescope.pickers')
+        local conf = require('telescope.config').values
+
+        pickers.new({}, {
+          prompt_title = 'Changed vs ' .. ref,
+          finder = finders.new_oneshot_job({ 'git', 'diff', '--name-only', ref .. '...HEAD' }, {}),
+          sorter = conf.generic_sorter({}),
+          attach_mappings = function(prompt_bufnr, _)
+            actions.select_default:replace(function()
+              local entry = action_state.get_selected_entry()
+              actions.close(prompt_bufnr)
+              vim.cmd('edit ' .. vim.fn.fnameescape(entry[1]))
+              require('gitsigns').change_base(ref, false)
+              show_inline_diff()
+            end)
+            return true
+          end,
+        }):find()
+      end, { desc = 'Git: Changed Files vs Branch (inline diff)' })
     end,
   }
