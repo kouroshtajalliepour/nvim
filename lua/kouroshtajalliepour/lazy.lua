@@ -23,6 +23,7 @@ local autopairs = require("kouroshtajalliepour.plugin.autopairs")
 local surround = require("kouroshtajalliepour.plugin.sorround")
 local markdown = require("kouroshtajalliepour.plugin.markdown")
 local treesitter = require("kouroshtajalliepour.plugin.treesitter")
+local dap = require("kouroshtajalliepour.plugin.dap")
 
 return {
   -- Themes and utils
@@ -54,6 +55,9 @@ return {
   autopairs,
   surround,
   markdown,
+
+  -- debugging
+  dap,
 
   -- file management
   harpoon,
