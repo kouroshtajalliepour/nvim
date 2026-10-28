@@ -100,6 +100,34 @@ return { -- Fuzzy Finder (files, lsp, etc)
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
 
+      -- find_files only ever lists files; this picker lists directories instead,
+      -- so you can jump straight into one (opens via netrw).
+      vim.keymap.set('n', '<leader>sD', function()
+        local actions = require('telescope.actions')
+        local action_state = require('telescope.actions.state')
+        local finders = require('telescope.finders')
+        local pickers = require('telescope.pickers')
+        local conf = require('telescope.config').values
+
+        local cmd = vim.fn.executable('fd') == 1
+          and { 'fd', '--type', 'd', '--hidden', '--strip-cwd-prefix', '--exclude', '.git' }
+          or { 'find', '.', '-type', 'd', '-not', '-path', '*/.git*' }
+
+        pickers.new({}, {
+          prompt_title = 'Directories',
+          finder = finders.new_oneshot_job(cmd, {}),
+          sorter = conf.generic_sorter({}),
+          attach_mappings = function(prompt_bufnr, _)
+            actions.select_default:replace(function()
+              local entry = action_state.get_selected_entry()
+              actions.close(prompt_bufnr)
+              vim.cmd('edit ' .. vim.fn.fnameescape(entry[1]))
+            end)
+            return true
+          end,
+        }):find()
+      end, { desc = '[S]earch [D]irectories' })
+
       -- Harpoon-style quick picker over changed files; Enter opens the file and shows
       -- removed lines inline (highlighted via gitsigns' DiffDelete-linked group),
       -- instead of a diff split.
