@@ -44,6 +44,33 @@ tuning, or ripping out any single piece never touches the rest.
 **Syntax**
 - `treesitter.lua` - parsing/highlighting for every language I touch
 
+**Debugging**
+- `dap.lua` - debugger core: `nvim-dap`, `nvim-dap-ui` (opens and closes
+  with each session) and inline variable values (`nvim-dap-virtual-text`)
+- `../dap-node.lua` - TS/JS adapter, using Mason's `js-debug-adapter`. Two
+  configs: "Launch current file" (Node runs `.ts` directly) and "Attach to
+  process"
+
+| Key | Action |
+|---|---|
+| `<leader>bb` / `<leader>bB` | toggle breakpoint / conditional breakpoint |
+| `<leader>bc` or `F5` | start / continue |
+| `<leader>bo` or `F10` | step over |
+| `<leader>bi` or `F11` | step into |
+| `<leader>bO` or `F12` | step out |
+| `<leader>bt` | stop |
+| `<leader>bu` | toggle the debugger panel |
+
+If it breaks, the symptom tells you which file to look at:
+
+| Symptom | Look at |
+|---|---|
+| Startup error, or `require('dap')` fails | `dap.lua`, `lazy.lua` |
+| Breakpoints work but no panel or inline values | `dap.lua` (dap-ui / virtual-text setup) |
+| "No configuration found" in a TS/JS file | `dap-node.lua` (`dap.configurations`) |
+| Adapter can't connect or exits immediately | `js-debug-adapter` missing from `:Mason`, or `node` not on PATH (`node-path.lua`) |
+| Runs but never stops at breakpoints | `dap-node.lua` (`sourceMaps` / `cwd`) |
+
 ## Structure
 
 `init.lua` loads, in order: `remap` (keymaps) -> `todo-logic` -> `set`
