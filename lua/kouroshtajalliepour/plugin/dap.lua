@@ -10,6 +10,7 @@ return {
 
     dapui.setup()
     require('nvim-dap-virtual-text').setup({})
+    require('kouroshtajalliepour.dap-node').setup(dap)
 
     -- Open the UI when a session starts, close it when the program ends.
     dap.listeners.before.attach.dapui_config = dapui.open
