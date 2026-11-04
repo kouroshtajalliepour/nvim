@@ -29,7 +29,7 @@ local function ensure_node_on_path()
 end
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+  pattern = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue' },
   once = true,
   callback = ensure_node_on_path,
 })

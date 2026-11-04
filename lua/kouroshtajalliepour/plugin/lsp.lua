@@ -189,12 +189,41 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'vtsls', -- TS server for .vue files (see the vtsls config below)
+        'vue-language-server', -- vue_ls, plus the @vue/typescript-plugin vtsls loads
+      })
+
+      -- Vue "hybrid mode", .vue files only: vue_ls does the template side and forwards
+      -- the TypeScript side to vtsls (via `typescript.tsserverRequest`, which
+      -- typescript-tools doesn't implement, so it can't be vue_ls's partner). vtsls
+      -- loads Mason's @vue/typescript-plugin, the same version as vue_ls. Plain .ts/.js
+      -- stay on typescript-tools, which loads the same plugin (see its spec below).
+      vim.lsp.config('vtsls', {
+        filetypes = { 'vue' },
+        settings = {
+          vtsls = {
+            tsserver = {
+              globalPlugins = {
+                {
+                  name = '@vue/typescript-plugin',
+                  location = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+                  languages = { 'vue' },
+                  configNamespace = 'typescript',
+                },
+              },
+            },
+          },
+        },
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
+        -- typescript-tools.nvim (below) is the TS server, and vue_ls handles .vue files.
+        -- ts_ls would be a second TS server on every .ts file, and vuels (Vetur, Vue 2)
+        -- fights vue_ls, so neither gets auto-enabled even though Mason has them installed.
+        automatic_enable = { exclude = { 'ts_ls', 'vuels' } },
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -208,6 +237,18 @@ return {
   {
     "pmizio/typescript-tools.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    opts = {},
+    -- tsserver loads @vue/typescript-plugin, so .ts files that import .vue components
+    -- see their real props (same as vue-tsc) instead of "Cannot find module './X.vue'".
+    -- .vue files themselves go to vue_ls + vtsls (see the lspconfig spec). typescript-tools only looks
+    -- for tsserver plugins in npm's global root, so Mason's copy (which matches vue_ls's
+    -- version) is symlinked there:
+    --   ln -s ~/.local/share/nvim/mason/packages/vue-language-server/node_modules/@vue/typescript-plugin \
+    --         "$(npm root -g)/@vue/typescript-plugin"
+    -- Redo the link after switching node versions with nvm.
+    opts = {
+      settings = {
+        tsserver_plugins = { "@vue/typescript-plugin" },
+      },
+    },
   },
 }
