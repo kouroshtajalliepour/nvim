@@ -2,6 +2,9 @@
 -- [ config ]
 --
 
+-- production: a server's terminal may not have a Nerd Font, so no icon glyphs
+vim.g.have_nerd_font = false
+
 -- line
 vim.o.number = true
 vim.o.relativenumber = true
@@ -15,8 +18,22 @@ vim.opt.softtabstop = 2    -- editing uses 2 spaces per tab
 -- Enable mouse mode, can be useful for resized splits for example!
 vim.o.mouse = 'a'
 
--- Clipboard sync
+-- Clipboard sync. Over SSH there's no X clipboard on the server, so use OSC 52:
+-- the terminal (alacritty, tmux with set-clipboard on) puts yanks on the local clipboard.
 vim.schedule(function()
+  if vim.env.SSH_TTY then
+    local osc52 = require('vim.ui.clipboard.osc52') -- Neovim 0.10+
+    vim.g.clipboard = {
+      name = 'OSC 52',
+      copy = { ['+'] = osc52.copy('+'), ['*'] = osc52.copy('*') },
+      -- alacritty doesn't answer OSC 52 reads, so paste from nvim's own register
+      -- (paste from the local clipboard with the terminal's paste key instead)
+      paste = {
+        ['+'] = function() return { vim.fn.split(vim.fn.getreg(''), '\n'), vim.fn.getregtype('') } end,
+        ['*'] = function() return { vim.fn.split(vim.fn.getreg(''), '\n'), vim.fn.getregtype('') } end,
+      },
+    }
+  end
   vim.o.clipboard = 'unnamedplus'
 end)
 
