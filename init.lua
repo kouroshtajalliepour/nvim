@@ -1,6 +1,4 @@
 require("kouroshtajalliepour.remap")
-require("kouroshtajalliepour.todo-logic")
 require("kouroshtajalliepour.set")
 require("kouroshtajalliepour.automations")
-require("kouroshtajalliepour.node-path")
 require("kouroshtajalliepour.loadLazy")
